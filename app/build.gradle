@@ -5,7 +5,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 android {
 
     defaultConfig {
-        buildToolsVersion "23.0.2"
+        buildToolsVersion "23.0.1"
         compileSdkVersion 23
         minSdkVersion 21
         targetSdkVersion 23
