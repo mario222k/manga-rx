@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/chapter_title"
+    style="@style/TextView.Manga.Chapter"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:drawablePadding="10dp"
+    android:drawableRight="@drawable/chapter_state"
+    tools:text="123 - Der Eremit"/>

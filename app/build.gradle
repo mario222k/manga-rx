@@ -1,0 +1,81 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+
+    defaultConfig {
+        buildToolsVersion "23.0.2"
+        compileSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 23
+        applicationId "de.mario222k.mangarx"
+        versionCode 1
+        versionName "1.0"
+    }
+
+//    productFlavors {
+//        googleApp {
+//            compileSdkVersion 23
+//            minSdkVersion 21
+//            targetSdkVersion 23
+//        }
+//
+//        amazonTvOs5 {
+//            compileSdkVersion 22
+//            minSdkVersion 21
+//            targetSdkVersion 22
+//        }
+//    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:support-v4:$support_version"
+    compile "com.android.support:design:$support_version"
+    compile "com.android.support:cardview-v7:$support_version"
+    compile "com.android.support:support-annotations:$support_version"
+
+    // dagger2
+    compile 'com.google.dagger:dagger:2.0'
+    provided 'com.google.dagger:dagger-compiler:2.0'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+
+    // rx java & android
+    compile 'io.reactivex:rxjava:1.1.0'
+    compile 'io.reactivex:rxandroid:1.1.0'
+
+    // jsoup
+    compile 'org.jsoup:jsoup:1.8.3'
+
+    // picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // photo view
+    compile 'com.commit451:PhotoView:1.2.4'
+
+    // green doa
+    compile 'de.greenrobot:greendao:2.1.0'
+
+    // kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    // amazon tv
+//    amazonTvOs5Compile "com.android.support:leanback-v17:23.1.1"
+
+    // mangarx interface library
+    compile project(path: ':interface')
+}

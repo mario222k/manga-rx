@@ -1,0 +1,89 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="FullscreenTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="TextView.Plugin" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/plugin_text_size</item>
+        <item name="android:paddingLeft">@dimen/plugin_item_padding</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextView.Plugin.Title">
+        <item name="android:textSize">@dimen/plugin_title_text_size</item>
+        <item name="android:padding">@dimen/plugin_item_padding</item>
+    </style>
+
+    <style name="TextView.Manga" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextView.Manga.Title">
+        <item name="android:textSize">@dimen/manga_title_text_size</item>
+        <item name="android:padding">@dimen/manga_title_padding</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="TextView.Manga.Chapter">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:minHeight">@dimen/manga_chapter_height</item>
+        <item name="android:paddingLeft">@dimen/manga_chapter_padding_left</item>
+        <item name="android:paddingTop">@dimen/manga_chapter_padding_top</item>
+        <item name="android:paddingRight">@dimen/manga_chapter_padding_right</item>
+        <item name="android:paddingBottom">@dimen/manga_chapter_padding_bottom</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/white_ripple</item>
+    </style>
+
+    <style name="TextView.Chapter" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="TextView.Crouton" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:padding">@dimen/crouton_padding</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_size</item>
+    </style>
+
+    <style name="Separator">
+        <item name="android:height">@dimen/thin_line</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+
+</resources>

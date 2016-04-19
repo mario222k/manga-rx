@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="viewpager_adapter_item_dirty_key" type="id"/>
+    <item name="viewpager_item_position" type="id"/>
+</resources>

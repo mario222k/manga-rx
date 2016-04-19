@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/plugin_item_padding">
+
+    <ImageView
+        android:id="@+id/plugin_icon"
+        android:layout_width="@dimen/plugin_icon_size"
+        android:layout_height="@dimen/plugin_icon_size"
+        android:scaleType="centerInside"
+        tools:src="@color/primary_dark"/>
+
+    <TextView
+        android:id="@+id/plugin_name"
+        style="@style/TextView.Plugin.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/plugin_icon"
+        tools:text="manga reader"/>
+
+    <TextView
+        android:id="@+id/plugin_version"
+        style="@style/TextView.Plugin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/plugin_name"
+        android:layout_below="@id/plugin_name"
+        tools:text="v1.0.1"/>
+
+</RelativeLayout>
