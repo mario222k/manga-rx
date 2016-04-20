@@ -4,10 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.*
 
-/**
-
- * Created by Mario.Sorge on 14/12/15.
- */
 class Manga : Parcelable {
     var name: String
     var url: String? = null

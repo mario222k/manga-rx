@@ -4,7 +4,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.support.v4.util.SparseArrayCompat
 
-
 class Chapter : Parcelable {
     var name: String? = null
         private set

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'kotlin-android'
 
 android {
@@ -26,4 +27,15 @@ dependencies {
 
     // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+publish {
+    userOrg = ''
+    groupId = 'de.mario222k'
+    artifactId = 'manga-rx'
+    version = '1.0.0'
+    description = 'Open Source project with Android Plugin pattern, Kotlin, RxJava and Dagger2.'
+    website = 'https://github.com/mario222k/manga-rx'
+    issueTracker = "https://github.com/mario222k/manga-rx/issues"
+    repository = "https://github.com/mario222k/manga-rx.git"
 }

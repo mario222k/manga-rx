@@ -8,7 +8,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        // gradle
         classpath 'com.android.tools.build:gradle:2.1.0-alpha5'
+
+        // bintray
+        classpath 'com.novoda:bintray-release:0.3.4'
 
         // dagger2
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
