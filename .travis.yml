@@ -29,4 +29,4 @@ env:
 
 after_success:
   # run bintray upload straight after deploy
-  - ./gradlew bintrayUpload -PbintrayUser=$USER -PbintrayKey=$KEY -PdryRun=false
+  - ./gradlew bintrayUpload -x mavenAndroidJavadocs -PbintrayUser=$USER -PbintrayKey=$KEY -PdryRun=false
