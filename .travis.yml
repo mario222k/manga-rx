@@ -23,10 +23,6 @@ env:
   # try to fix "PermGen space"
   - GRADLE_OPTS="-Xmx256m -XX:MaxPermSize=256m"
 
-  # define critical vars
-  - secure: qzMqFQjccg3xpTzySreMdRny48yt3/Rst3jJNwzg+yJDC6mtgOE9AL3sV7oyQsI6eZwdP6VWc3RFPbZ+k5a6joqcLhb+XwXEJ+8EiL6u6DhCZWGDosiOq+TTJdpZidlqzZFFqhvlTCKDBGgyf8Wj4XAtm2blb0BXbsMxNUUAsrk=
-  - secure: lkO0z+g7FrcIGM8xp/r0l+TXI7NnpjrJ0dWFG8+bvV/Tm03LTH+M/eAYiMCNTcFQ1uKpZVROeAj9OSkBsX3JorLSTb/mBLcoqcscUUHoyOY3auok45QuWIAqPkwbByzlgFfrdpqSc3AfxHcbbY8YWhHOj2YggxtJkTLsxQl0gCM=
-
 after_success:
   # run bintray upload straight after deploy
-  - ./gradlew bintrayUpload -x mavenAndroidJavadocs -PbintrayUser=$USER -PbintrayKey=$KEY -PdryRun=false
+  - ./gradlew bintrayUpload -x mavenAndroidJavadocs -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY -PdryRun=false
