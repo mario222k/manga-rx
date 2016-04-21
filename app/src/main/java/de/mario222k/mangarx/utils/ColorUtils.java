@@ -16,15 +16,6 @@ import de.mario222k.mangarx.R;
 public class ColorUtils {
 
     private static final int[] COLOR_PALETTE = {
-//            R.color.dark_brown,
-//            R.color.brown,
-//            R.color.coral,
-//            R.color.red,
-//            R.color.dark_red,
-//            R.color.orange,
-//            R.color.mustard,
-//            R.color.green,
-//            R.color.emerald,
             R.color.primary,
             R.color.cobalt,
             R.color.navy,
@@ -52,7 +43,7 @@ public class ColorUtils {
         }
 
         if (character < 0 || character > 35) {
-            return getColor(context, COLOR_PALETTE[16]);
+            return getColor(context, COLOR_PALETTE[6]);
         }
 
         if (character < 10) {
