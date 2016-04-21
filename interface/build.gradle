@@ -1,8 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'kotlin-android'
 
 def app_version = "0.1"
+def vcs_tag = "0.1"
+def description = "Model and AIDL definition for MangaRx Plugins"
+def web_url = "https://github.com/mario222k/manga-rx"
+def git_url = "https://github.com/mario222k/manga-rx.git"
 
 android {
     compileSdkVersion 23
@@ -32,17 +38,64 @@ dependencies {
 }
 
 
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                name description
+                url web_url
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'mario222k'
+                        name 'Mario'
+                        email 'mario222k@gmail.com'
+                    }
+                }
+                scm {
+                    connection git_url
+                    developerConnection git_url
+                    url web_url
+
+                }
+            }
+        }
+    }
+}
+
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
+    publications = ['publicate']
     pkg {
         repo = 'maven'
         name = 'manga-rx-interface'
+        userOrg = user
         licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/mario222k/manga-rx.git'
+        vcsUrl = git_url
+        publish = true
         version {
             name = app_version
+            desc = description
+            released  = new Date()
+            vcsTag = vcs_tag
+        }
+    }
+}
+
+publishing {
+    publications {
+        publicate(MavenPublication) {
+            groupId 'de.mario222k.mangarxinterface'
+            artifactId 'manga-rx-interface'
+            version app_version
         }
     }
 }
