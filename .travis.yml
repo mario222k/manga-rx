@@ -25,4 +25,4 @@ env:
 
 after_success:
   # run bintray upload straight after deploy
-  - ./gradlew :interface:bintrayUpload
+  - ./gradlew :interface:install :interface:bintrayUpload

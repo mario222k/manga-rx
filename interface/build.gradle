@@ -20,6 +20,18 @@ android {
         versionCode 1
         versionName app_version
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += ['src/main/java','src/main/aidl']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -36,7 +48,6 @@ dependencies {
     // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
-
 
 install {
     repositories.mavenInstaller {
@@ -73,7 +84,7 @@ install {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publications = ['publicate']
+    publications = ['mavenJava']
     pkg {
         repo = 'maven'
         name = 'manga-rx-interface'
@@ -84,18 +95,30 @@ bintray {
         version {
             name = app_version
             desc = description
-            released  = new Date()
+            released = new Date()
             vcsTag = vcs_tag
         }
     }
 }
 
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 publishing {
     publications {
-        publicate(MavenPublication) {
+        mavenJava(MavenPublication) {
             groupId 'de.mario222k.mangarxinterface'
             artifactId 'manga-rx-interface'
             version app_version
+
+            artifact(sourcesJar)
+            artifact("$buildDir/outputs/aar/interface-release.aar")
         }
     }
 }
