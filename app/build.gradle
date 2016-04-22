@@ -3,10 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 def app_version = "1.0.1"
+def manga_rx_interface_version = '0.2'
+def support_version = '23.3.0'
 
 android {
     defaultConfig {
-        buildToolsVersion "23.0.1"
+        buildToolsVersion "23.0.2"
         compileSdkVersion 23
         minSdkVersion 21
         targetSdkVersion 23
@@ -78,5 +80,5 @@ dependencies {
 //    amazonTvOs5Compile "com.android.support:leanback-v17:23.1.1"
 
     // mangarx interface library
-    compile project(path: ':interface')
+    compile "de.mario222k:manga-rx-interface:$manga_rx_interface_version"
 }

@@ -104,7 +104,7 @@ public class ChapterActivity extends AppCompatActivity {
         mCrouton = (TextView) findViewById(R.id.crouton_text);
 
         // fetch all pages from chapter for faster paging, not needed but cool :)
-        MangaReader.getCompleteChapter(mChapter)
+        MangaReader.Companion.getCompleteChapter(mChapter)
                 .filter(new Func1<Chapter, Boolean>() {
                     @Override
                     public Boolean call ( Chapter chapter ) {
@@ -221,7 +221,7 @@ public class ChapterActivity extends AppCompatActivity {
 
         final PhotoView finalImageView = imageView;
         // fetch async image url
-        MangaReader.getPage(mChapter, position + 1)
+        MangaReader.Companion.getPage(mChapter, position + 1)
                 .filter(new Func1<Page, Boolean>() {
                     @Override
                     public Boolean call ( Page page ) {
@@ -269,7 +269,7 @@ public class ChapterActivity extends AppCompatActivity {
 
         if(page < count) {
             mStorage.setChapterPageReaded(mChapter, page);
-        } else {
+        } else if(count >= 0) {
             mStorage.setChapterCompleted(mChapter);
         }
     }

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MangaRx.iml" filepath="$PROJECT_DIR$/MangaRx.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/interface/interface.iml" filepath="$PROJECT_DIR$/interface/interface.iml" />
       <module fileurl="file://$PROJECT_DIR$/interface/mangarxinterface.iml" filepath="$PROJECT_DIR$/interface/mangarxinterface.iml" />
     </modules>
   </component>
