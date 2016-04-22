@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
-def app_version = "1.0.1"
+def app_version = "1.0.2"
 def manga_rx_interface_version = '0.2'
 def support_version = '23.3.0'
 
