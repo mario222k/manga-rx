@@ -72,11 +72,17 @@ private class PluginAdapter(provider: PluginProvider?, listener: PluginSelectLis
     private val pluginProvider = provider
 
     override fun onBindViewHolder(viewHolder: PluginViewHolder?, index: Int) {
+        if(viewHolder == null) {
+            return
+        }
+
         val plugin = pluginProvider?.plugins?.get(index)
-        viewHolder?.icon?.setImageDrawable(plugin?.icon)
-        viewHolder?.name?.text = plugin?.label
-        viewHolder?.version?.text = plugin?.version
-        viewHolder?.itemView?.setOnClickListener({ v ->
+        val context = viewHolder.context
+
+        viewHolder.icon.setImageDrawable(plugin?.getIcon(context))
+        viewHolder.name.text = plugin?.getName(context)
+        viewHolder.version.text = plugin?.getVersion(context)
+        viewHolder.itemView?.setOnClickListener({ v ->
                 pluginProvider?.activePlugin = plugin
                 selectListener?.onPluginSelect(plugin)
         })
@@ -96,7 +102,8 @@ interface PluginSelectListener {
 }
 
 private class PluginViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    internal val icon = view.findViewById(R.id.plugin_icon) as ImageView
-    internal val name = view.findViewById(R.id.plugin_name) as TextView
-    internal val version = view.findViewById(R.id.plugin_version) as TextView
+    val context = view.context
+    val icon = view.findViewById(R.id.plugin_icon) as ImageView
+    val name = view.findViewById(R.id.plugin_name) as TextView
+    val version = view.findViewById(R.id.plugin_version) as TextView
 }

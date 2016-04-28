@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;
+import de.mario222k.mangarx.plugin.PluginConnection;
 import de.mario222k.mangarx.storage.ChapterStorageImpl;
 import de.mario222k.mangarx.storage.RecentStorage;
 import de.mario222k.mangarx.storage.RecentStorageImpl;
@@ -18,9 +19,7 @@ import de.mario222k.mangarx.storage.RecentStorageImpl;
 public class RecentModule {
 
     @Inject
-    public RecentModule () {
-
-    }
+    public RecentModule () { }
 
     @Provides
     RecentAdapter providesRecentAdapter ( Application application ) {
@@ -32,4 +31,7 @@ public class RecentModule {
     RecentStorage providesRecentStorage ( Application application ) {
         return new RecentStorageImpl(application);
     }
+
+    @Provides
+    PluginConnection providePluginConnector () { return new PluginConnection(); }
 }

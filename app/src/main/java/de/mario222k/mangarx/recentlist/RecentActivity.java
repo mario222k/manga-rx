@@ -1,7 +1,6 @@
 package de.mario222k.mangarx.recentlist;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +22,7 @@ import de.mario222k.mangarx.application.MyApp;
 import de.mario222k.mangarx.application.PluginDialogFragment;
 import de.mario222k.mangarx.application.PluginSelectListener;
 import de.mario222k.mangarx.chapter.ChapterActivity;
+import de.mario222k.mangarx.plugin.PluginConnection;
 import de.mario222k.mangarx.plugin.PluginDetail;
 import de.mario222k.mangarx.storage.RecentStorage;
 import de.mario222k.mangarxinterface.model.Chapter;
@@ -40,6 +40,12 @@ public class RecentActivity extends AppCompatActivity {
 
     @Inject
     RecentStorage mStorage;
+
+    @Inject
+    PluginConnection mPluginConnection;
+
+    @Nullable
+    private PluginDetail mSelectedPlugin;
 
     @Override
     protected void onCreate ( Bundle savedInstanceState ) {
@@ -60,18 +66,9 @@ public class RecentActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_view);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets ( Rect outRect, View view, RecyclerView parent, RecyclerView.State state ) {
-                int left = getResources().getDimensionPixelOffset(R.dimen.recent_item_margin_left);
-                int top = getResources().getDimensionPixelOffset(R.dimen.recent_item_margin_top);
-                int right = getResources().getDimensionPixelOffset(R.dimen.recent_item_margin_right);
-                int bottom = getResources().getDimensionPixelOffset(R.dimen.recent_item_margin_bottom);
-                outRect.set(left, top, right, bottom);
-            }
-        });
+        recyclerView.addItemDecoration(new ItemDecoration(this));
 
         mRecentAdapter.setOnClickListener(new RecentAdapter.OnClickListener() {
             @Override
@@ -107,11 +104,39 @@ public class RecentActivity extends AppCompatActivity {
                     }
                 });
         recyclerView.setAdapter(mRecentAdapter);
+
+        if(savedInstanceState != null) {
+            mSelectedPlugin = savedInstanceState.getParcelable("selected_plugin");
+        }
+        mPluginConnection.setListener(new PluginConnection.Listener() {
+            @Override
+            public void onConnected () {
+                if(mSelectedPlugin == null) {
+                    return;
+                }
+                showText("connected: " + mSelectedPlugin.getName(getApplicationContext()));
+            }
+
+            @Override
+            public void onDisconnected () {
+                if(mSelectedPlugin == null) {
+                    return;
+                }
+                showText("disconnected: " + mSelectedPlugin.getName(getApplicationContext()));
+            }
+
+            private void showText(String text) {
+                Toast.makeText(refreshLayout.getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
     protected void onResume () {
         super.onResume();
+        if(mSelectedPlugin != null) {
+            mPluginConnection.connect(this, mSelectedPlugin.getPackage());
+        }
 
         Chapter lastChapter = mStorage.getLastChapter();
         if (lastChapter != null) {
@@ -124,6 +149,18 @@ public class RecentActivity extends AppCompatActivity {
         if (mRecentAdapter.getItemCount() == 0) {
             mRecentAdapter.fetchMore();
         }
+    }
+
+    @Override
+    protected void onPause () {
+        super.onPause();
+        mPluginConnection.disconnect(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState ( Bundle outState ) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("selected_plugin", mSelectedPlugin);
     }
 
     @Override
@@ -151,17 +188,18 @@ public class RecentActivity extends AppCompatActivity {
         return true;
     }
 
+
     private void showPlugins() {
         final PluginDialogFragment dialogFragment = new PluginDialogFragment();
         dialogFragment.setPluginSelectListener(new PluginSelectListener() {
             @Override
             public void onPluginSelect ( @Nullable PluginDetail plugin ) {
                 dialogFragment.dismiss();
+                mSelectedPlugin = plugin;
                 if(plugin == null) {
                     return;
                 }
-
-                Toast.makeText(RecentActivity.this, plugin.toString(), Toast.LENGTH_SHORT).show();
+                mPluginConnection.connect(RecentActivity.this, mSelectedPlugin.getPackage());
             }
         });
         dialogFragment.show(getSupportFragmentManager(), "pluginDialog");
