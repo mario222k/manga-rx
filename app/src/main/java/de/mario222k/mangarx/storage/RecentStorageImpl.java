@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
+import de.mario222k.mangarx.plugin.PluginDetail;
+import de.mario222k.mangarx.plugin.PluginProvider;
 import de.mario222k.mangarxinterface.model.Chapter;
 
 /**
@@ -14,11 +17,14 @@ import de.mario222k.mangarxinterface.model.Chapter;
  */
 public class RecentStorageImpl implements RecentStorage {
     private final String CHAPTER_STORAGE_NAME = "recent_chapter";
+    private final String PLUGIN_STORAGE_NAME = "recent_plugin";
 
     Application mApplication;
+    PluginProvider mPluginProvider;
 
-    public RecentStorageImpl ( @NonNull Application application ) {
+    public RecentStorageImpl ( @NonNull Application application, @NonNull PluginProvider pluginProvider ) {
         mApplication = application;
+        mPluginProvider = pluginProvider;
     }
 
     @Override
@@ -50,5 +56,35 @@ public class RecentStorageImpl implements RecentStorage {
         }
 
         return new Chapter(name, url);
+    }
+
+    @Override
+    public boolean setLastPlugin ( @Nullable PluginDetail plugin ) {
+        SharedPreferences.Editor editor = mApplication.getSharedPreferences(PLUGIN_STORAGE_NAME, Context.MODE_PRIVATE).edit();
+
+        if(plugin == null || TextUtils.isEmpty(plugin.getPackage())) {
+            return editor.remove("last_plugin").commit();
+        }
+
+        return editor.putString("last_plugin", plugin.getPackage()).commit();
+    }
+
+    @Nullable
+    @Override
+    public PluginDetail getLastPlugin () {
+        SharedPreferences preferences = mApplication.getSharedPreferences(PLUGIN_STORAGE_NAME, Context.MODE_PRIVATE);
+        String pluginPackage = preferences.getString("last_plugin", null);
+
+        if(TextUtils.isEmpty(pluginPackage)) {
+            return  null;
+        }
+
+        for(PluginDetail plugin : mPluginProvider.getPlugins()) {
+            if(pluginPackage.equals(plugin.getPackage())) {
+                return plugin;
+            }
+        }
+
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package de.mario222k.mangarx.recentlist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +12,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mario222k.mangarx.provider.MangaReader;
 import de.mario222k.mangarx.storage.ChapterStorage;
 import de.mario222k.mangarxinterface.model.Chapter;
 import de.mario222k.mangarxinterface.model.Manga;
+import de.mario222k.mangarxinterface.provider.IProviderInterface;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 
 /**
@@ -31,7 +27,9 @@ public class RecentAdapter extends RecyclerView.Adapter {
 
     private ChapterStorage mStorage;
     private Context mContext;
-    private MangaReader mMangeReader;
+
+    @Nullable
+    private IProviderInterface mInterface;
 
     @Nullable
     private OnClickListener mClickListener;
@@ -46,7 +44,6 @@ public class RecentAdapter extends RecyclerView.Adapter {
     public RecentAdapter ( @NonNull Context context, @NonNull ChapterStorage storage ) {
         mContext = context;
         mStorage = storage;
-        mMangeReader = new MangaReader();
         mRecentMangas = new ArrayList<>();
 
         mIsLoadingSubject = BehaviorSubject.create(false);
@@ -84,6 +81,11 @@ public class RecentAdapter extends RecyclerView.Adapter {
         mClickListener = listener;
     }
 
+    public void setInterface ( IProviderInterface providerInterface ) {
+        mInterface = providerInterface;
+        mIsLoadingSubject.onNext(false);
+    }
+
     public void refresh () {
         if (mIsLoadingSubject.getValue()) {
             return;
@@ -101,40 +103,22 @@ public class RecentAdapter extends RecyclerView.Adapter {
     }
 
     public void fetchMore () {
-        if (mIsLoadingSubject.getValue()) {
+        if (mIsLoadingSubject.getValue() || mInterface == null) {
             return;
         }
 
         mIsLoadingSubject.onNext(true);
+        try {
+            List<Manga> mangas = mInterface.getLatestMangas(mNextPage);
+            mRecentMangas.addAll(mangas);
+            notifyDataSetChanged();
+            mNextPage++;
+        } catch (RemoteException e) {
+            e.printStackTrace();
 
-        mMangeReader.getLatestMangas(mNextPage)
-                .filter(new Func1<List<Manga>, Boolean>() {
-                    @Override
-                    public Boolean call ( List<Manga> mangas ) {
-                        return mangas != null && !mangas.isEmpty();
-                    }
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<Manga>>() {
-                    @Override
-                    public void call ( List<Manga> mangas ) {
-                        mRecentMangas.addAll(mangas);
-                        notifyDataSetChanged();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call ( Throwable throwable ) {
-                        throwable.printStackTrace();
-                        mIsLoadingSubject.onNext(false);
-                    }
-                }, new Action0() {
-                    @Override
-                    public void call () {
-                        mNextPage++;
-                        mIsLoadingSubject.onNext(false);
-                    }
-                });
+        } finally {
+            mIsLoadingSubject.onNext(false);
+        }
     }
 
     public interface OnClickListener {

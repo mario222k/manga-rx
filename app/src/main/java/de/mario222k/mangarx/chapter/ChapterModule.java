@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;
+import de.mario222k.mangarx.plugin.PluginConnection;
 import de.mario222k.mangarx.storage.ChapterStorage;
 import de.mario222k.mangarx.storage.ChapterStorageImpl;
 
@@ -23,4 +24,7 @@ public class ChapterModule {
     ChapterStorage providesChapterStorage ( Application application ) {
         return new ChapterStorageImpl(application);
     }
+
+    @Provides
+    PluginConnection providesPluginConnector () { return new PluginConnection(); }
 }

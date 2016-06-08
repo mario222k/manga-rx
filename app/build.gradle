@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 def app_version = "1.0.2"
-def manga_rx_interface_version = '0.2'
-def support_version = '23.3.0'
+def manga_rx_interface_version = '0.2.1'
+def support_version = '23.4.0'
 
 android {
     defaultConfig {
-        buildToolsVersion "23.0.2"
+        buildToolsVersion "23.0.3"
         compileSdkVersion 23
         minSdkVersion 21
         targetSdkVersion 23
@@ -32,6 +32,9 @@ android {
 //    }
 
     buildTypes {
+        debug {
+            debuggable false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -60,9 +63,6 @@ dependencies {
     // rx java & android
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
-
-    // jsoup
-    compile 'org.jsoup:jsoup:1.8.3'
 
     // picasso
     compile 'com.squareup.picasso:picasso:2.5.2'

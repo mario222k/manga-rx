@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
+import de.mario222k.mangarx.BuildConfig;
 import de.mario222k.mangarx.R;
 import de.mario222k.mangarx.application.MyApp;
 import de.mario222k.mangarx.application.PluginDialogFragment;
@@ -57,6 +58,7 @@ public class RecentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        //noinspection ConstantConditions
         refreshLayout.setColorSchemeResources(android.R.color.white);
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.primary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -67,6 +69,7 @@ public class RecentActivity extends AppCompatActivity {
         });
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_view);
+        //noinspection ConstantConditions
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new ItemDecoration(this));
 
@@ -82,8 +85,8 @@ public class RecentActivity extends AppCompatActivity {
             public void onChapterClick ( @NonNull View view, @NonNull Chapter item ) {
                 Intent i = new Intent(RecentActivity.this, ChapterActivity.class);
                 i.putExtra("chapter", item);
+                i.putExtra("plugin", mSelectedPlugin);
                 startActivityForResult(i, REQUEST_CODE);
-
                 mStorage.setLastChapter(item);
             }
         });
@@ -114,7 +117,12 @@ public class RecentActivity extends AppCompatActivity {
                 if(mSelectedPlugin == null) {
                     return;
                 }
-                showText("connected: " + mSelectedPlugin.getName(getApplicationContext()));
+
+                if (BuildConfig.DEBUG) {
+                    showText("connected: " + mSelectedPlugin.getName(getApplicationContext()));
+                }
+                mRecentAdapter.setInterface(mPluginConnection.getBinder());
+                mRecentAdapter.refresh();
             }
 
             @Override
@@ -122,7 +130,10 @@ public class RecentActivity extends AppCompatActivity {
                 if(mSelectedPlugin == null) {
                     return;
                 }
-                showText("disconnected: " + mSelectedPlugin.getName(getApplicationContext()));
+
+                if (BuildConfig.DEBUG) {
+                    showText("disconnected: " + mSelectedPlugin.getName(getApplicationContext()));
+                }
             }
 
             private void showText(String text) {
@@ -134,16 +145,18 @@ public class RecentActivity extends AppCompatActivity {
     @Override
     protected void onResume () {
         super.onResume();
-        if(mSelectedPlugin != null) {
-            mPluginConnection.connect(this, mSelectedPlugin.getPackage());
-        }
+        mSelectedPlugin = mStorage.getLastPlugin();
 
         Chapter lastChapter = mStorage.getLastChapter();
-        if (lastChapter != null) {
+        if (lastChapter != null && mSelectedPlugin != null) {
             Intent i = new Intent(RecentActivity.this, ChapterActivity.class);
             i.putExtra("chapter", lastChapter);
+            i.putExtra("plugin", mSelectedPlugin);
             startActivityForResult(i, REQUEST_CODE);
             return;
+        }
+        if(mSelectedPlugin != null) {
+            mPluginConnection.connect(this, mSelectedPlugin.getPackage());
         }
 
         if (mRecentAdapter.getItemCount() == 0) {
@@ -196,7 +209,8 @@ public class RecentActivity extends AppCompatActivity {
             public void onPluginSelect ( @Nullable PluginDetail plugin ) {
                 dialogFragment.dismiss();
                 mSelectedPlugin = plugin;
-                if(plugin == null) {
+                mStorage.setLastPlugin(mSelectedPlugin);
+                if(mSelectedPlugin == null) {
                     return;
                 }
                 mPluginConnection.connect(RecentActivity.this, mSelectedPlugin.getPackage());

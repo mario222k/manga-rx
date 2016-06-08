@@ -2,6 +2,7 @@ package de.mario222k.mangarx.storage;
 
 import android.support.annotation.Nullable;
 
+import de.mario222k.mangarx.plugin.PluginDetail;
 import de.mario222k.mangarxinterface.model.Chapter;
 
 /**
@@ -12,4 +13,8 @@ public interface RecentStorage {
     boolean setLastChapter ( @Nullable Chapter chapter );
     @Nullable
     Chapter getLastChapter ();
+
+    boolean setLastPlugin ( @Nullable PluginDetail plugin );
+    @Nullable
+    PluginDetail getLastPlugin ();
 }
