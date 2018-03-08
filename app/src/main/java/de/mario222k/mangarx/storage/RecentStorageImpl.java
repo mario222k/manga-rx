@@ -7,9 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
+
 import de.mario222k.mangarx.plugin.PluginDetail;
 import de.mario222k.mangarx.plugin.PluginProvider;
 import de.mario222k.mangarxinterface.model.Chapter;
+import de.mario222k.mangarxinterface.model.Page;
 
 /**
  * Created by Mario.Sorge on 02/01/16.
@@ -54,7 +57,7 @@ public class RecentStorageImpl implements RecentStorage {
             return null;
         }
 
-        return new Chapter(name, url);
+        return new Chapter(name, url, new ArrayList<Page>());
     }
 
     @Override

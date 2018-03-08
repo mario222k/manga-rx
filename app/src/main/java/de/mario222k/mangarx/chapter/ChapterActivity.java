@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import de.mario222k.mangarx.BuildConfig;
@@ -126,7 +128,7 @@ public class ChapterActivity extends AppCompatActivity {
 
             @Override
             public int getCount () {
-                int pageCount = mChapter.getPageCount();
+                int pageCount = getPageCount();
                 // allow paging even when MangaReader.getCompleteChapter() is not finished yet
                 return pageCount < 0 ? Integer.MAX_VALUE : pageCount;
             }
@@ -220,7 +222,7 @@ public class ChapterActivity extends AppCompatActivity {
             @Override
             public void call (Subscriber<? super Chapter> subscriber) {
                 try {
-                    if (mChapter.getPageCount() <= 0) {
+                    if (getPageCount() <= 0) {
                         subscriber.onNext(providerInterface.getCompleteChapter(mChapter));
                     } else {
                         subscriber.onNext(mChapter);
@@ -251,6 +253,11 @@ public class ChapterActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    private int getPageCount() {
+        List<Page> pages = mChapter.getPages();
+        return (pages != null) ? pages.size() : 0;
     }
 
     /**
@@ -398,7 +405,7 @@ public class ChapterActivity extends AppCompatActivity {
      */
     private void onPositionChanged (int position) {
         mCurrentPosition = position;
-        int count = mChapter.getPageCount();
+        int count = getPageCount();
         int page = position + 1;
         String title = getString(R.string.chapter_title, page, count);
         setTitle(title);
