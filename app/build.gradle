@@ -1,39 +1,24 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.neenbedankt.android-apt'
 
 def app_version = "1.0.2"
 def manga_rx_interface_version = '0.2.1'
-def support_version = '23.4.0'
+def support_version = '27.1.0'
 
 android {
     defaultConfig {
-        buildToolsVersion "23.0.3"
-        compileSdkVersion 23
+        buildToolsVersion "27.0.3"
+        compileSdkVersion 27
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 27
         applicationId "de.mario222k.mangarx"
         versionCode 1
         versionName app_version
     }
 
-//    productFlavors {
-//        googleApp {
-//            compileSdkVersion 23
-//            minSdkVersion 21
-//            targetSdkVersion 23
-//        }
-//
-//        amazonTvOs5 {
-//            compileSdkVersion 22
-//            minSdkVersion 21
-//            targetSdkVersion 22
-//        }
-//    }
-
     buildTypes {
         debug {
-            debuggable false
+            debuggable true
         }
         release {
             minifyEnabled false
@@ -56,13 +41,12 @@ dependencies {
     compile "com.android.support:support-annotations:$support_version"
 
     // dagger2
-    compile 'com.google.dagger:dagger:2.0'
-    provided 'com.google.dagger:dagger-compiler:2.0'
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.google.dagger:dagger:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
 
     // rx java & android
-    compile 'io.reactivex:rxjava:1.1.0'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    compile 'io.reactivex:rxjava:1.2.3'
+    compile 'io.reactivex:rxandroid:1.2.1'
 
     // picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
