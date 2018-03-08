@@ -6,9 +6,9 @@ import android.graphics.drawable.Drawable
 import android.os.Parcel
 import android.os.Parcelable
 
-class PluginDetail: Parcelable {
+class PluginDetail : Parcelable {
 
-    private lateinit var info: ResolveInfo
+    private var info: ResolveInfo
 
     constructor(resolveInfo: ResolveInfo) {
         info = resolveInfo
@@ -47,7 +47,7 @@ class PluginDetail: Parcelable {
             return false
         }
 
-        return info.equals(other.info)
+        return info == other.info
     }
 
     override fun hashCode(): Int {

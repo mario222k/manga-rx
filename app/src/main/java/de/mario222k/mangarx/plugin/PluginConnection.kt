@@ -17,12 +17,12 @@ class PluginConnection : ServiceConnection {
     }
 
     private var intent: Intent? = null
-    var binder: IProviderInterface?  = null
+    var binder: IProviderInterface? = null
         private set
     var listener: Listener? = null
 
     fun connect(appContext: Context, packageName: String) {
-        if(isConnected()) {
+        if (isConnected()) {
             return
         }
 
@@ -33,11 +33,11 @@ class PluginConnection : ServiceConnection {
     }
 
     fun disconnect(appContext: Context) {
-        if(!isConnected()) {
+        if (!isConnected()) {
             return
         }
         listener?.onDisconnected()
-        if(intent != null) {
+        if (intent != null) {
             appContext.stopService(intent);
         }
         appContext.unbindService(this)
@@ -52,7 +52,7 @@ class PluginConnection : ServiceConnection {
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        if(service != null) {
+        if (service != null) {
             binder = IProviderInterface.Stub.asInterface(service)
             listener?.onConnected()
         }

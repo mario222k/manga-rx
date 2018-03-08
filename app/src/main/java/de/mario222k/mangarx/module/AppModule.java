@@ -15,9 +15,9 @@ import de.mario222k.mangarx.plugin.PluginProvider;
 @Module
 public class AppModule {
 
-    Application mApplication;
+    private Application mApplication;
 
-    public AppModule ( Application application ) {
+    public AppModule (Application application) {
         mApplication = application;
     }
 

@@ -14,22 +14,25 @@ import android.widget.TextView
 import de.mario222k.mangarx.R
 import de.mario222k.mangarx.plugin.PluginDetail
 import de.mario222k.mangarx.plugin.PluginProvider
+import kotlinx.android.synthetic.main.fragment_plugins.view.*
 import javax.inject.Inject
 
-open class PluginDialogFragment() : DialogFragment() {
+open class PluginDialogFragment : DialogFragment() {
 
     @Inject
     lateinit var pluginProvider: PluginProvider
 
     private var layout: View? = null
-    private var recyclerView: RecyclerView? = null
-    private var emptyText: View? = null
     private var selectListener: PluginSelectListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        (activity.application as MyApp).pluginComponent.inject(this)
+        val activity = activity!!
 
-        initLayout()
+        (activity.application as? MyApp)?.pluginComponent?.inject(this)
+
+        layout = activity.layoutInflater?.inflate(R.layout.fragment_plugins, null)
+        layout?.list_view?.layoutManager = LinearLayoutManager(activity)
+        onListenerChanged()
 
         val builder = AlertDialog.Builder(activity)
         builder.setCancelable(true)
@@ -42,27 +45,20 @@ open class PluginDialogFragment() : DialogFragment() {
         onListenerChanged()
     }
 
-    private fun initLayout() {
-        layout = activity.layoutInflater.inflate(R.layout.fragment_plugins, null) as ViewGroup
-        recyclerView = layout?.findViewById(R.id.list_view) as RecyclerView
-        recyclerView?.layoutManager = LinearLayoutManager(activity)
-        emptyText = layout?.findViewById(R.id.empty_text)
-
-        onListenerChanged()
-    }
-
     private fun onListenerChanged() {
-        recyclerView?.adapter = PluginAdapter(pluginProvider, selectListener)
+        layout?.list_view?.adapter = PluginAdapter(pluginProvider, selectListener)
         onAdapterChanged()
     }
 
     private fun onAdapterChanged() {
-        if (recyclerView?.adapter?.itemCount ?: 0 == 0) {
-            recyclerView?.visibility = View.GONE
-            emptyText?.visibility = View.VISIBLE
-        } else {
-            recyclerView?.visibility = View.VISIBLE
-            emptyText?.visibility = View.GONE
+        layout?.list_view?.let {
+            if (it.adapter?.itemCount ?: 0 == 0) {
+                it.visibility = View.GONE
+                layout?.empty_text?.visibility = View.VISIBLE
+            } else {
+                it.visibility = View.VISIBLE
+                layout?.empty_text?.visibility = View.GONE
+            }
         }
     }
 }
@@ -71,11 +67,7 @@ private class PluginAdapter(provider: PluginProvider?, listener: PluginSelectLis
     internal var selectListener = listener
     private val pluginProvider = provider
 
-    override fun onBindViewHolder(viewHolder: PluginViewHolder?, index: Int) {
-        if(viewHolder == null) {
-            return
-        }
-
+    override fun onBindViewHolder(viewHolder: PluginViewHolder, index: Int) {
         val plugin = pluginProvider?.plugins?.get(index)
         val context = viewHolder.context
 
@@ -83,15 +75,14 @@ private class PluginAdapter(provider: PluginProvider?, listener: PluginSelectLis
         viewHolder.name.text = plugin?.getName(context)
         viewHolder.version.text = plugin?.getVersion(context)
         viewHolder.itemView?.setOnClickListener({ v ->
-                pluginProvider?.activePlugin = plugin
-                selectListener?.onPluginSelect(plugin)
+            pluginProvider?.activePlugin = plugin
+            selectListener?.onPluginSelect(plugin)
         })
     }
 
-    override fun onCreateViewHolder(container: ViewGroup?, viewType: Int): PluginViewHolder? {
-        val inflater = LayoutInflater.from(container?.context)
-        val viewHolder = PluginViewHolder(inflater.inflate(R.layout.layout_plugin_item, null))
-        return viewHolder
+    override fun onCreateViewHolder(container: ViewGroup, viewType: Int): PluginViewHolder {
+        val inflater = LayoutInflater.from(container.context)
+        return PluginViewHolder(inflater.inflate(R.layout.layout_plugin_item, null))
     }
 
     override fun getItemCount() = pluginProvider?.plugins?.size ?: 0

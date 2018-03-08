@@ -49,16 +49,15 @@ public class RecentActivity extends AppCompatActivity {
     private PluginDetail mSelectedPlugin;
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState ) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).getRecentComponent().inject(this);
 
         setContentView(R.layout.activity_recent);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
-        //noinspection ConstantConditions
+        final SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
         refreshLayout.setColorSchemeResources(android.R.color.white);
         refreshLayout.setProgressBackgroundColorSchemeResource(R.color.primary);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -68,21 +67,20 @@ public class RecentActivity extends AppCompatActivity {
             }
         });
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_view);
-        //noinspection ConstantConditions
+        final RecyclerView recyclerView = findViewById(R.id.list_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new ItemDecoration(this));
 
         mRecentAdapter.setOnClickListener(new RecentAdapter.OnClickListener() {
             @Override
-            public void onMangaClick ( @NonNull View view, @NonNull Manga item ) {
+            public void onMangaClick (@NonNull View view, @NonNull Manga item) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(item.getUrl()));
                 startActivity(i);
             }
 
             @Override
-            public void onChapterClick ( @NonNull View view, @NonNull Chapter item ) {
+            public void onChapterClick (@NonNull View view, @NonNull Chapter item) {
                 Intent i = new Intent(RecentActivity.this, ChapterActivity.class);
                 i.putExtra("chapter", item);
                 i.putExtra("plugin", mSelectedPlugin);
@@ -96,25 +94,25 @@ public class RecentActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Boolean>() {
                     @Override
-                    public void call ( Boolean isLoading ) {
+                    public void call (Boolean isLoading) {
                         refreshLayout.setRefreshing(isLoading);
                     }
                 }, new Action1<Throwable>() {
                     @Override
-                    public void call ( Throwable throwable ) {
+                    public void call (Throwable throwable) {
                         throwable.printStackTrace();
                         refreshLayout.setRefreshing(false);
                     }
                 });
         recyclerView.setAdapter(mRecentAdapter);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mSelectedPlugin = savedInstanceState.getParcelable("selected_plugin");
         }
         mPluginConnection.setListener(new PluginConnection.Listener() {
             @Override
             public void onConnected () {
-                if(mSelectedPlugin == null) {
+                if (mSelectedPlugin == null) {
                     return;
                 }
 
@@ -127,7 +125,7 @@ public class RecentActivity extends AppCompatActivity {
 
             @Override
             public void onDisconnected () {
-                if(mSelectedPlugin == null) {
+                if (mSelectedPlugin == null) {
                     return;
                 }
 
@@ -136,7 +134,7 @@ public class RecentActivity extends AppCompatActivity {
                 }
             }
 
-            private void showText(String text) {
+            private void showText (String text) {
                 Toast.makeText(refreshLayout.getContext(), text, Toast.LENGTH_SHORT).show();
             }
         });
@@ -155,7 +153,7 @@ public class RecentActivity extends AppCompatActivity {
             startActivityForResult(i, REQUEST_CODE);
             return;
         }
-        if(mSelectedPlugin != null) {
+        if (mSelectedPlugin != null) {
             mPluginConnection.connect(this, mSelectedPlugin.getPackage());
         }
 
@@ -171,14 +169,14 @@ public class RecentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState ( Bundle outState ) {
+    protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("selected_plugin", mSelectedPlugin);
     }
 
     @Override
-    protected void onActivityResult ( int requestCode, int resultCode, Intent data ) {
-        if(requestCode == REQUEST_CODE) {
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
             mStorage.setLastChapter(null);
             return;
         }
@@ -186,14 +184,14 @@ public class RecentActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu ( Menu menu ) {
+    public boolean onCreateOptionsMenu (Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_recent, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected ( MenuItem item ) {
+    public boolean onOptionsItemSelected (MenuItem item) {
         if (item.getItemId() != R.id.plugin_menu_item) {
             return super.onOptionsItemSelected(item);
         }
@@ -202,15 +200,15 @@ public class RecentActivity extends AppCompatActivity {
     }
 
 
-    private void showPlugins() {
+    private void showPlugins () {
         final PluginDialogFragment dialogFragment = new PluginDialogFragment();
         dialogFragment.setPluginSelectListener(new PluginSelectListener() {
             @Override
-            public void onPluginSelect ( @Nullable PluginDetail plugin ) {
+            public void onPluginSelect (@Nullable PluginDetail plugin) {
                 dialogFragment.dismiss();
                 mSelectedPlugin = plugin;
                 mStorage.setLastPlugin(mSelectedPlugin);
-                if(mSelectedPlugin == null) {
+                if (mSelectedPlugin == null) {
                     return;
                 }
                 mPluginConnection.connect(RecentActivity.this, mSelectedPlugin.getPackage());

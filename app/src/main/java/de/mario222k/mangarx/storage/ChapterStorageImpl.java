@@ -15,7 +15,7 @@ public class ChapterStorageImpl implements ChapterStorage {
 
     private final String PAGE_STORAGE_NAME = "chapter_page";
 
-    Application mApplication;
+    private Application mApplication;
 
     public ChapterStorageImpl ( @NonNull Application application ) {
         mApplication = application;
@@ -33,7 +33,6 @@ public class ChapterStorageImpl implements ChapterStorage {
     }
 
     @Override
-    @SuppressWarnings("SimplifiableIfStatement")
     public boolean setChapterBookmark ( @NonNull Chapter chapter, boolean isBookmarked ) {
         SharedPreferences preferences = mApplication.getSharedPreferences(PAGE_STORAGE_NAME, Context.MODE_PRIVATE);
 

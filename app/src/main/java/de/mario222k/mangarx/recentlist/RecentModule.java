@@ -20,19 +20,22 @@ import de.mario222k.mangarx.storage.RecentStorageImpl;
 public class RecentModule {
 
     @Inject
-    public RecentModule () { }
+    public RecentModule () {
+    }
 
     @Provides
-    RecentAdapter providesRecentAdapter ( Application application ) {
+    RecentAdapter providesRecentAdapter (Application application) {
         return new RecentAdapter(application, new ChapterStorageImpl(application));
     }
 
 
     @Provides
-    RecentStorage providesRecentStorage ( Application application, PluginProvider pluginProvider ) {
+    RecentStorage providesRecentStorage (Application application, PluginProvider pluginProvider) {
         return new RecentStorageImpl(application, pluginProvider);
     }
 
     @Provides
-    PluginConnection providePluginConnector () { return new PluginConnection(); }
+    PluginConnection providePluginConnector () {
+        return new PluginConnection();
+    }
 }

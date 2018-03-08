@@ -26,7 +26,7 @@ public class ColorUtils {
     };
 
     @ColorInt
-    private static int getColor ( Context context, @ColorRes int coloRes) {
+    private static int getColor (Context context, @ColorRes int coloRes) {
         if (Build.VERSION.SDK_INT >= 23) {
             return context.getColor(coloRes);
         } else {
@@ -35,7 +35,7 @@ public class ColorUtils {
     }
 
     @ColorInt
-    public static int getColorFromChar ( @NonNull Context context, int character ) {
+    public static int getColorFromChar (@NonNull Context context, int character) {
         if (character <= 57) {
             character -= 48;
         } else {
@@ -53,7 +53,7 @@ public class ColorUtils {
         return interpolateColor(context, (character - 10) / 25f, 0, 5);
     }
 
-    private static int interpolateColor ( @NonNull Context context, float percent, int paletteStartIndex, int paletteEndIndex ) {
+    private static int interpolateColor (@NonNull Context context, float percent, int paletteStartIndex, int paletteEndIndex) {
         int paletteItemsCount = paletteEndIndex - paletteStartIndex + 1;
         float palettePosition = Math.min(percent * paletteItemsCount, paletteItemsCount - 1);
 
@@ -84,7 +84,7 @@ public class ColorUtils {
      * @return color
      */
     @ColorInt
-    public static int getColor ( int[] argb ) {
+    public static int getColor (int[] argb) {
         int c = Color.TRANSPARENT;
         for (int i = argb.length - 1; i >= 0; i--) {
             c += (argb[i] & 0x0ff) << (i * 8);
@@ -98,7 +98,7 @@ public class ColorUtils {
      * @param color target Color
      * @return int array in order: [ALPHA, RED, GREEN, BLUE]
      */
-    public static int[] getARGBValues ( @ColorInt int color ) {
+    public static int[] getARGBValues (@ColorInt int color) {
         int argb[] = {0, 0, 0, 0};
         for (int i = argb.length - 1; i >= 0; i--) {
             argb[i] = (color >> (i * 8)) & 0x0ff;
@@ -114,7 +114,7 @@ public class ColorUtils {
      * @param value multiply value
      * @return new color
      */
-    public static int[] multiplyValue ( int[] color, float value ) {
+    public static int[] multiplyValue (int[] color, float value) {
         if (value == 1f) {
             return color;
         }
@@ -133,7 +133,7 @@ public class ColorUtils {
      * @param color2 add color
      * @return new color with max 255 for each channel
      */
-    public static int[] addColor ( int[] color1, int[] color2 ) {
+    public static int[] addColor (int[] color1, int[] color2) {
         int argb[] = new int[4];
         for (int i = 0; i < 4; i++) {
             argb[i] = Math.max(0, Math.min(255, color1[i] + color2[i]));

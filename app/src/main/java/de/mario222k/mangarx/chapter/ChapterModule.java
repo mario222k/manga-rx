@@ -18,13 +18,16 @@ import de.mario222k.mangarx.storage.ChapterStorageImpl;
 public class ChapterModule {
 
     @Inject
-    public ChapterModule () { }
+    public ChapterModule () {
+    }
 
     @Provides
-    ChapterStorage providesChapterStorage ( Application application ) {
+    ChapterStorage providesChapterStorage (Application application) {
         return new ChapterStorageImpl(application);
     }
 
     @Provides
-    PluginConnection providesPluginConnector () { return new PluginConnection(); }
+    PluginConnection providesPluginConnector () {
+        return new PluginConnection();
+    }
 }

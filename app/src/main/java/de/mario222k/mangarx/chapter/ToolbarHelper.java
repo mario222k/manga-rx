@@ -48,7 +48,7 @@ public class ToolbarHelper {
             if (actionBar != null) {
                 actionBar.show();
             }
-            if(mControlsView != null) {
+            if (mControlsView != null) {
                 mControlsView.setVisibility(View.VISIBLE);
             }
         }
@@ -67,9 +67,9 @@ public class ToolbarHelper {
         }
     };
 
-    public ToolbarHelper ( @NonNull AppCompatActivity activity,
-                           @Nullable View controlsView,
-                           @NonNull View contentView ) {
+    public ToolbarHelper (@NonNull AppCompatActivity activity,
+                          @Nullable View controlsView,
+                          @NonNull View contentView) {
         mActivity = activity;
         mControlsView = controlsView;
         mContentView = contentView;
@@ -93,7 +93,7 @@ public class ToolbarHelper {
         if (actionBar != null) {
             actionBar.hide();
         }
-        if(mControlsView != null) {
+        if (mControlsView != null) {
             mControlsView.setVisibility(View.GONE);
         }
         mVisible = false;
@@ -119,13 +119,14 @@ public class ToolbarHelper {
      * Schedules a call to hide() in [delay] milliseconds, canceling any
      * previously scheduled calls.
      */
-    public void delayedHide ( int delayMillis ) {
+    public void delayedHide (int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
     /**
      * Get visible state.
+     *
      * @return {@code true} if visible
      */
     public boolean isVisible () {
@@ -133,7 +134,7 @@ public class ToolbarHelper {
     }
 
     @NonNull
-    public AppCompatActivity getActivity() {
+    public AppCompatActivity getActivity () {
         return mActivity;
     }
 }

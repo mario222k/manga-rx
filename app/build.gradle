@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 def app_version = "1.0.2"
 def manga_rx_interface_version = '0.2.1'
@@ -54,14 +55,8 @@ dependencies {
     // photo view
     compile 'com.commit451:PhotoView:1.2.4'
 
-    // green doa
-    compile 'de.greenrobot:greendao:2.1.0'
-
     // kotlin
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    // amazon tv
-//    amazonTvOs5Compile "com.android.support:leanback-v17:23.1.1"
 
     // mangarx interface library
     compile "de.mario222k:manga-rx-interface:$manga_rx_interface_version"

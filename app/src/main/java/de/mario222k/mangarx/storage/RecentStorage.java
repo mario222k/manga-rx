@@ -6,15 +6,16 @@ import de.mario222k.mangarx.plugin.PluginDetail;
 import de.mario222k.mangarxinterface.model.Chapter;
 
 /**
- *
  * Created by Mario.Sorge on 02/01/16.
  */
 public interface RecentStorage {
-    boolean setLastChapter ( @Nullable Chapter chapter );
+    boolean setLastChapter (@Nullable Chapter chapter);
+
     @Nullable
     Chapter getLastChapter ();
 
-    boolean setLastPlugin ( @Nullable PluginDetail plugin );
+    boolean setLastPlugin (@Nullable PluginDetail plugin);
+
     @Nullable
     PluginDetail getLastPlugin ();
 }

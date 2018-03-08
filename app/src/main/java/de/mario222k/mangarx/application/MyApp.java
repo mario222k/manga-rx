@@ -14,7 +14,6 @@ import de.mario222k.mangarx.recentlist.RecentComponent;
 import de.mario222k.mangarx.recentlist.RecentModule;
 
 /**
- *
  * Created by Mario.Sorge on 13/12/15.
  */
 public class MyApp extends Application {
@@ -28,11 +27,11 @@ public class MyApp extends Application {
     private ChapterComponent mChapterComponent;
 
     @Override
-    public void onCreate() {
+    public void onCreate () {
         super.onCreate();
     }
 
-    public PluginComponent getPluginComponent() {
+    public PluginComponent getPluginComponent () {
         if (mPluginComponent == null) {
             mPluginComponent = DaggerPluginComponent.builder()
                     .appModule(new AppModule(this))
@@ -41,7 +40,7 @@ public class MyApp extends Application {
         return mPluginComponent;
     }
 
-    public RecentComponent getRecentComponent() {
+    public RecentComponent getRecentComponent () {
         if (mRecentComponent == null) {
             mRecentComponent = DaggerRecentComponent.builder()
                     .appModule(new AppModule(this))
@@ -51,7 +50,7 @@ public class MyApp extends Application {
         return mRecentComponent;
     }
 
-    public ChapterComponent getChapterComponent() {
+    public ChapterComponent getChapterComponent () {
         if (mChapterComponent == null) {
             mChapterComponent = DaggerChapterComponent.builder()
                     .appModule(new AppModule(this))

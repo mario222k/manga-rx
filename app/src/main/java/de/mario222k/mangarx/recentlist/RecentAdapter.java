@@ -57,13 +57,14 @@ public class RecentAdapter extends RecyclerView.Adapter {
     @Override
     @SuppressLint("SetTextI18n")
     public void onBindViewHolder ( RecyclerView.ViewHolder holder, int position ) {
-        if (position > mRecentMangas.size() - 5) {
-            fetchMore();
-        }
+        int size = mRecentMangas.size();
+//        if (position > size - 5) {
+//            fetchMore();
+//        }
 
         RecentViewHolder recentViewHolder = (RecentViewHolder) holder;
 
-        if (mRecentMangas.size() > position) {
+        if (size > position) {
             final Manga manga = mRecentMangas.get(position);
             recentViewHolder.update(manga, mClickListener);
 

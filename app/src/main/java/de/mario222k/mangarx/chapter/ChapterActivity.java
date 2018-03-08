@@ -68,7 +68,7 @@ public class ChapterActivity extends AppCompatActivity {
     private PluginDetail mSelectedPlugin;
 
     @Override
-    protected void onCreate ( Bundle savedInstanceState ) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((MyApp) getApplication()).getChapterComponent().inject(this);
 
@@ -120,7 +120,7 @@ public class ChapterActivity extends AppCompatActivity {
 
         mViewAdapter = new ViewPagerAdapter<PhotoView>(this) {
             @Override
-            public PhotoView createView ( @NonNull ViewGroup container, @Nullable PhotoView item, int position ) {
+            public PhotoView createView (@NonNull ViewGroup container, @Nullable PhotoView item, int position) {
                 return createOrUpdateImageView(item, position);
             }
 
@@ -132,32 +132,31 @@ public class ChapterActivity extends AppCompatActivity {
             }
         };
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        //noinspection ConstantConditions
+        mViewPager = findViewById(R.id.view_pager);
         mViewPager.setEnabled(false);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled ( int position, float positionOffset, int positionOffsetPixels ) {
+            public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
-            public void onPageSelected ( int position ) {
+            public void onPageSelected (int position) {
                 onPositionChanged(position);
             }
 
             @Override
-            public void onPageScrollStateChanged ( int state ) {
+            public void onPageScrollStateChanged (int state) {
             }
         });
 
-        mCrouton = (TextView) findViewById(R.id.crouton_text);
+        mCrouton = findViewById(R.id.crouton_text);
 
         mToolbarHelper = new ToolbarHelper(this, null, mViewPager);
         mToolbarHelper.setVisible(true);
     }
 
     @Override
-    protected void onPostCreate ( Bundle savedInstanceState ) {
+    protected void onPostCreate (Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // hide toolbar after user has seen this
         mToolbarHelper.delayedHide(100);
@@ -172,10 +171,10 @@ public class ChapterActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onConfigurationChanged ( Configuration newConfig ) {
+    public void onConfigurationChanged (Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        /**
+        /*
          * Update ScaleType for all ImageViews that are added to the ViewPager.
          */
         ImageView.ScaleType type;
@@ -212,16 +211,16 @@ public class ChapterActivity extends AppCompatActivity {
      *
      * @param providerInterface connected interface
      */
-    private void onPluginConnected ( @NonNull final IProviderInterface providerInterface ) {
+    private void onPluginConnected (@NonNull final IProviderInterface providerInterface) {
         // update adapter to start loading for visible pages
         replaceAdapter();
 
         // fetch all pages from chapter for faster paging, not needed but cool :)
         Observable.create(new Observable.OnSubscribe<Chapter>() {
             @Override
-            public void call ( Subscriber<? super Chapter> subscriber ) {
+            public void call (Subscriber<? super Chapter> subscriber) {
                 try {
-                    if(mChapter.getPageCount() <= 0) {
+                    if (mChapter.getPageCount() <= 0) {
                         subscriber.onNext(providerInterface.getCompleteChapter(mChapter));
                     } else {
                         subscriber.onNext(mChapter);
@@ -236,18 +235,18 @@ public class ChapterActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<Chapter, Boolean>() {
                     @Override
-                    public Boolean call ( Chapter chapter ) {
+                    public Boolean call (Chapter chapter) {
                         return chapter != null && !TextUtils.isEmpty(chapter.getUrl());
                     }
                 })
                 .subscribe(new Action1<Chapter>() {
                     @Override
-                    public void call ( @NonNull Chapter chapter ) {
+                    public void call (@NonNull Chapter chapter) {
                         onChapterLoaded(chapter);
                     }
                 }, new Action1<Throwable>() {
                     @Override
-                    public void call ( Throwable throwable ) {
+                    public void call (Throwable throwable) {
                         showText(throwable.getMessage());
                         finish();
                     }
@@ -259,8 +258,8 @@ public class ChapterActivity extends AppCompatActivity {
      *
      * @param chapter loaded chapter
      */
-    private void onChapterLoaded ( @NonNull Chapter chapter ) {
-        if(isFinishing()) {
+    private void onChapterLoaded (@NonNull Chapter chapter) {
+        if (isFinishing()) {
             return;
         }
 
@@ -273,7 +272,7 @@ public class ChapterActivity extends AppCompatActivity {
         }
     }
 
-    private void replaceAdapter() {
+    private void replaceAdapter () {
         mViewPager.setEnabled(true);
         mViewPager.setAdapter(null);
         Log.d(TAG, "replace chapter");
@@ -306,7 +305,7 @@ public class ChapterActivity extends AppCompatActivity {
      * @param position  within chapter
      * @return updated instance as given or new instance if was {@code null}
      */
-    private PhotoView createOrUpdateImageView ( @Nullable PhotoView imageView, final int position ) {
+    private PhotoView createOrUpdateImageView (@Nullable PhotoView imageView, final int position) {
         Log.d(TAG, "create page " + position + ", " + imageView);
 
         if (imageView == null) {
@@ -319,7 +318,7 @@ public class ChapterActivity extends AppCompatActivity {
         imageView.scrollTo(0, 0);
         imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
-            public void onPhotoTap ( View view, float x, float y ) {
+            public void onPhotoTap (View view, float x, float y) {
                 mToolbarHelper.toggle();
             }
         });
@@ -358,7 +357,7 @@ public class ChapterActivity extends AppCompatActivity {
         final ImageView finalImageView = imageView;
         Observable.create(new Observable.OnSubscribe<Page>() {
             @Override
-            public void call ( Subscriber<? super Page> subscriber ) {
+            public void call (Subscriber<? super Page> subscriber) {
                 try {
                     subscriber.onNext(providerInterface.getPage(mChapter, position + 1));
 
@@ -371,13 +370,13 @@ public class ChapterActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<Page, Boolean>() {
                     @Override
-                    public Boolean call ( Page page ) {
+                    public Boolean call (Page page) {
                         return page != null && !TextUtils.isEmpty(page.getUrl());
                     }
                 })
                 .subscribe(new Action1<Page>() {
                     @Override
-                    public void call ( @NonNull Page page ) {
+                    public void call (@NonNull Page page) {
                         int ivPosition = (int) finalImageView.getTag(R.id.viewpager_item_position);
                         if (ivPosition != position) {
                             Log.w(TAG, "skip image loading for " + position);
@@ -397,7 +396,7 @@ public class ChapterActivity extends AppCompatActivity {
      *
      * @param position new position
      */
-    private void onPositionChanged ( int position ) {
+    private void onPositionChanged (int position) {
         mCurrentPosition = position;
         int count = mChapter.getPageCount();
         int page = position + 1;
@@ -415,7 +414,7 @@ public class ChapterActivity extends AppCompatActivity {
         }
     }
 
-    private void showText ( String text ) {
+    private void showText (String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
@@ -424,7 +423,7 @@ public class ChapterActivity extends AppCompatActivity {
      *
      * @param text content for crouton
      */
-    private void showCrouton ( @NonNull String text ) {
+    private void showCrouton (@NonNull String text) {
         mCrouton.removeCallbacks(mCroutonHideRunnable);
 
         mCrouton.setText(text);

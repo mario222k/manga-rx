@@ -33,34 +33,33 @@ import de.mario222k.mangarxinterface.model.Manga;
  */
 class RecentViewHolder extends RecyclerView.ViewHolder {
 
-    public static RecentViewHolder create ( @NonNull Context context, @NonNull ChapterStorage storage ) {
+    public static RecentViewHolder create (@NonNull Context context, @NonNull ChapterStorage storage) {
         @SuppressLint("InflateParams")
         CardView cardView = (CardView) LayoutInflater.from(context).inflate(R.layout.layout_recent_item, null);
         return new RecentViewHolder(cardView, storage);
     }
 
-    ChapterStorage mStorage;
+    private ChapterStorage mStorage;
 
     private CardView mCardView;
     private ImageView mCoverImage;
     private TextView mTitleText;
     private LinearLayout mChapterContainer;
 
-    private RecentViewHolder ( @NonNull CardView cardView, @NonNull ChapterStorage storage ) {
+    private RecentViewHolder (@NonNull CardView cardView, @NonNull ChapterStorage storage) {
         super(cardView);
 
-        mStorage = storage;
-
         cardView.setClickable(true);
-        //noinspection RedundantCast
-        ((FrameLayout) cardView).setForeground(cardView.getContext().getDrawable(R.drawable.transparent_ripple));
+        cardView.setForeground(cardView.getContext().getDrawable(R.drawable.transparent_ripple));
+
+        mStorage = storage;
         mCardView = cardView;
-        mCoverImage = (ImageView) cardView.findViewById(R.id.cover_image);
-        mTitleText = (TextView) cardView.findViewById(R.id.title_text);
-        mChapterContainer = (LinearLayout) cardView.findViewById(R.id.chapter_container);
+        mCoverImage = cardView.findViewById(R.id.cover_image);
+        mTitleText = cardView.findViewById(R.id.title_text);
+        mChapterContainer = cardView.findViewById(R.id.chapter_container);
     }
 
-    public void update ( @Nullable final Manga manga, @Nullable final RecentAdapter.OnClickListener listener ) {
+    public void update (@Nullable final Manga manga, @Nullable final RecentAdapter.OnClickListener listener) {
         if (manga == null || manga.getChapters().isEmpty()) {
             mCardView.setVisibility(View.GONE);
             return;
@@ -69,7 +68,7 @@ class RecentViewHolder extends RecyclerView.ViewHolder {
         mCardView.setVisibility(View.VISIBLE);
         mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick ( View v ) {
+            public void onClick (View v) {
                 if (listener == null) {
                     return;
                 }
@@ -102,12 +101,11 @@ class RecentViewHolder extends RecyclerView.ViewHolder {
                     inflater.inflate(R.layout.view_seperator, mChapterContainer);
                 }
 
-                @SuppressLint("InflateParams") final
-                TextView chapterText = (TextView) inflater.inflate(R.layout.layout_recent_chapter_item, null);
+                @SuppressLint("InflateParams") final TextView chapterText = (TextView) inflater.inflate(R.layout.layout_recent_chapter_item, null);
                 chapterText.setText(chapter.getName());
                 chapterText.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
-                    public boolean onLongClick ( View v ) {
+                    public boolean onLongClick (View v) {
                         Drawable drawable = chapterText.getCompoundDrawables()[2];
                         int level = drawable.getLevel();
                         switch (level) {
@@ -134,7 +132,7 @@ class RecentViewHolder extends RecyclerView.ViewHolder {
 
                 chapterText.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick ( View v ) {
+                    public void onClick (View v) {
                         if (listener == null) {
                             return;
                         }

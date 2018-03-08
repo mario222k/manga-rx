@@ -25,7 +25,7 @@ public abstract class ViewPagerAdapter<T extends View> extends PagerAdapter {
     /**
      * @param context context
      */
-    public ViewPagerAdapter ( @NonNull Context context ) {
+    public ViewPagerAdapter (@NonNull Context context) {
         mContext = context;
     }
 
@@ -33,27 +33,28 @@ public abstract class ViewPagerAdapter<T extends View> extends PagerAdapter {
      * this method should initialize convertView
      *
      * @param container the parent
-     * @param item a recycled Item that can be used or {@code null}
+     * @param item      a recycled Item that can be used or {@code null}
      * @param position  the item position from controller
      * @return new instance from {@code T}
      */
-    public abstract T createView ( @NonNull ViewGroup container, @Nullable  T item, int position );
+    public abstract T createView (@NonNull ViewGroup container, @Nullable T item, int position);
 
     /**
      * Position is initialized by {@code createView()}.
      * Each call will add view to container, if view has no parent.
      *
      * @param container current view group
-     * @param position adapter position
+     * @param position  adapter position
      * @return updated view from class type
      */
+    @NonNull
     @Override
-    public Object instantiateItem ( ViewGroup container, int position ) {
+    public Object instantiateItem (@NonNull ViewGroup container, int position) {
         final T updatedView;
 
         updatedView = createView(container, mRecycleView, position);
 
-        if(mRecycleView == updatedView) {
+        if (mRecycleView == updatedView) {
             mRecycleView = null;
         }
 
@@ -71,11 +72,11 @@ public abstract class ViewPagerAdapter<T extends View> extends PagerAdapter {
      * Each call will remove view from container
      *
      * @param container current view group
-     * @param position adapter position
-     * @param object view from class type
+     * @param position  adapter position
+     * @param object    view from class type
      */
     @Override
-    public void destroyItem ( ViewGroup container, int position, Object object ) {
+    public void destroyItem (@NonNull ViewGroup container, int position, @NonNull Object object) {
         //noinspection unchecked
         final T view = (T) object;
 
@@ -87,19 +88,19 @@ public abstract class ViewPagerAdapter<T extends View> extends PagerAdapter {
 
 
     @Override
-    public void setPrimaryItem ( ViewGroup container, int position, Object object ) {
+    public void setPrimaryItem (@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.setPrimaryItem(container, position, object);
         //noinspection unchecked
         mCurrentView = (T) object;
     }
 
     @Override
-    public boolean isViewFromObject ( View view, Object object ) {
+    public boolean isViewFromObject (@NonNull View view, @NonNull Object object) {
         return view.equals(object);
     }
 
     @Override
-    public int getItemPosition ( Object object ) {
+    public int getItemPosition (@NonNull Object object) {
         if (object instanceof View && (Boolean) ((View) object).getTag(R.id.viewpager_adapter_item_dirty_key)) {
             return POSITION_NONE; // force recreation
         }
