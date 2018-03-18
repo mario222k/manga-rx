@@ -257,7 +257,7 @@ public class ChapterActivity extends AppCompatActivity {
 
     private int getPageCount() {
         List<Page> pages = mChapter.getPages();
-        return (pages != null) ? pages.size() : 0;
+        return (pages != null) ? pages.size() : -1;
     }
 
     /**
