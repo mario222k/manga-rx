@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-def app_version = "1.0.2"
+def app_version = "1.0.4"
 def manga_rx_interface_version = '0.4'
 def support_version = '27.1.0'
 
