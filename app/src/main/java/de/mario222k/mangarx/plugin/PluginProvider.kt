@@ -7,7 +7,7 @@ import de.mario222k.mangarx.R
 import java.util.*
 
 class PluginProvider(context: Context) {
-    val pluginFilter = context.getString(R.string.provider_name)
+    private val pluginFilter = context.getString(R.string.provider_name)
     var plugins = ArrayList<PluginDetail>()
 
     var activePlugin: PluginDetail? = null
@@ -16,12 +16,12 @@ class PluginProvider(context: Context) {
         // package manager is used to retrieve the system's packages
         val packageManager = context.packageManager
         // we need an intent that will be used to load the packages
-        val intent = Intent(pluginFilter);
+        val intent = Intent(pluginFilter)
         val availableActivities = packageManager.queryIntentServices(intent, PackageManager.GET_RESOLVED_FILTER);
         // for each one we create a custom list view item
         for (resolveInfo in availableActivities) {
-            val applicationDetail = PluginDetail(resolveInfo);
-            plugins.add(applicationDetail);
+            val applicationDetail = PluginDetail(resolveInfo)
+            plugins.add(applicationDetail)
         }
     }
 }
